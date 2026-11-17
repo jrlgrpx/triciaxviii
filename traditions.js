@@ -16,7 +16,10 @@ traditions.forEach(([title,id,names], index) => {
   const heading = document.createElement('h2'); heading.textContent = title;
   const kicker = document.createElement('p'); kicker.className = 'section-kicker'; kicker.textContent = `TRADITION ${String(index+1).padStart(2,'0')} · 18 PARTICIPANTS`;
   const intro = document.createElement('p'); intro.className = 'section-intro'; intro.textContent = title === '18 Roses' ? 'A timeless symbol of affection, admiration, and beautiful beginnings.' : 'A little magic, a thoughtful gesture, and memories to treasure.';
-  const list = document.createElement('ol'); list.className = 'people-list';
+  const list = document.createElement('ol'); list.className = 'people-list'; list.id = `${id}-people`;
+  const toggle = document.createElement('button'); toggle.className = 'tradition-toggle'; toggle.type = 'button'; toggle.setAttribute('aria-expanded','false'); toggle.setAttribute('aria-controls',list.id); toggle.innerHTML = '<span>VIEW ALL 18 PARTICIPANTS</span><span class="toggle-icon" aria-hidden="true">＋</span>';
+  list.hidden = true;
+  toggle.addEventListener('click', () => { const expanded = toggle.getAttribute('aria-expanded') === 'true'; toggle.setAttribute('aria-expanded', String(!expanded)); list.hidden = expanded; toggle.querySelector('span:first-child').textContent = expanded ? 'VIEW ALL 18 PARTICIPANTS' : 'HIDE PARTICIPANTS'; toggle.querySelector('.toggle-icon').textContent = expanded ? '＋' : '−'; });
   names.split('|').forEach((name,i) => { const li=document.createElement('li'); const num=document.createElement('span'); num.className='person-number'; num.textContent=String(i+1).padStart(2,'0'); const person=document.createElement('span'); person.textContent=name; li.append(num,person); list.append(li); });
-  section.append(kicker,heading,intro,list); container.append(section);
+  section.append(kicker,heading,intro,toggle,list); container.append(section);
 });

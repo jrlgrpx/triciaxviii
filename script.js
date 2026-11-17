@@ -34,3 +34,25 @@ if (photoRail) {
   });
   updateGalleryProgress();
 }
+
+
+// Full Facebook album: paste the album's public/share URL here before publishing.
+const FACEBOOK_ALBUM_URL = 'PASTE_FACEBOOK_ALBUM_URL_HERE';
+const albumButton = document.querySelector('[data-facebook-album]');
+if (albumButton) albumButton.addEventListener('click', event => {
+  if (!FACEBOOK_ALBUM_URL || FACEBOOK_ALBUM_URL === 'PASTE_FACEBOOK_ALBUM_URL_HERE') {
+    event.preventDefault();
+    alert('Add Tricia’s Facebook pre-debut album link in script.js first.');
+    return;
+  }
+  albumButton.href = FACEBOOK_ALBUM_URL;
+});
+
+// Second, independent 10-photo pre-debut highlights carousel.
+const filmRail = document.querySelector('.film-carousel');
+if (filmRail) {
+  const step = () => { const card = filmRail.querySelector('.film-card'); return card ? card.getBoundingClientRect().width + 14 : 260; };
+  document.querySelector('[data-film-prev]')?.addEventListener('click', () => filmRail.scrollBy({left:-step(),behavior:'smooth'}));
+  document.querySelector('[data-film-next]')?.addEventListener('click', () => filmRail.scrollBy({left:step(),behavior:'smooth'}));
+  filmRail.addEventListener('keydown', event => { if(event.key==='ArrowRight') filmRail.scrollBy({left:step(),behavior:'smooth'}); if(event.key==='ArrowLeft') filmRail.scrollBy({left:-step(),behavior:'smooth'}); });
+}
